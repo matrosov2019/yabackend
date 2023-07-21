@@ -1,3 +1,3 @@
-`npm i`
-`npx prisma db push`
+`npm i` <br/>
+`npx prisma db push` <br/>
 `npx prisma generate`

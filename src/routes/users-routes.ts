@@ -2,6 +2,7 @@ import {NextFunction, Request, Response, Router} from 'express';
 //import IUserModel, { User } from '../database/models/user.model';
 //import passport from 'passport';
 //import { authentication } from "../utilities/authentication";
+import { login } from "../services/user.service";
 
 import {verifyJwt} from "../middleware/auth";
 
@@ -10,7 +11,9 @@ const router: Router = Router();
 /**
  * GET /api/user
  */
-router.get('/test', (req: Request, res: Response, next: NextFunction) => {
+router.get('/login', async (req: Request, res: Response, next: NextFunction) => {
+
+        const result = await login(req.body)
         res.status(200).json({ans: true});
         /*
         User
@@ -26,7 +29,23 @@ router.get('/test', (req: Request, res: Response, next: NextFunction) => {
     }
 );
 
-router.get('/private', verifyJwt, (req: Request, res: Response, next: NextFunction) => {
+router.get('/register', (req: Request, res: Response, next: NextFunction) => {
+        res.status(200).json({ans: true});
+        /*
+        User
+            .findById(req.payload.id)
+            .then((user: IUserModel) => {
+                    res.status(200).json({user: user.toAuthJSON()});
+                }
+            )
+            .catch(next);
+
+         */
+
+    }
+);
+
+router.get('/form', verifyJwt, (req: Request, res: Response, next: NextFunction) => {
         res.status(200).json({ans: true});
         /*
         User

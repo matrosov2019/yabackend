@@ -1,7 +1,12 @@
 // @ts-ignore
 import bcrypt from "bcrypt";
+
+const {PrismaClient} = require('@prisma/client');
+const prisma = new PrismaClient();
+
 export async function login(user: any) {
     try {
+        console.log('login: ', user);
         /*
         const foundUser = await UserModel.findOne({ name: user.name });
 
