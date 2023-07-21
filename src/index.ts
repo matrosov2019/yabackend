@@ -1,10 +1,10 @@
 import express, {Express} from 'express';
 import dotenv from 'dotenv';
 import {MainRouter} from './routes';
-dotenv.config()
+dotenv.config();
 
-const app: Express = express()
-const port: string = process.env.PORT
+const app: Express = express();
+const port: string = process.env.PORT;
 
 app.use(express.json());
 app.use(
