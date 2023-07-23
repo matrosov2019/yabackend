@@ -18,6 +18,7 @@ class UserController {
             const {email, password} = req.body;
 
             //TODO Всю работу с пользователями вынести в сервис
+            //bcrypt заменить на crypto
 
             const user = await prisma.user.findUnique({
                 where: {
@@ -26,12 +27,26 @@ class UserController {
             });
 
             if (!user) {
-                return res.status(400).send("Invalid Credentials");
+                return res.status(400).json({
+                    result: {},
+                    error: {
+                        code: "",
+                        message: "Invalid Credentials",
+                        data: {}
+                    }
+                });
             }
 
             const isValid = await bcrypt.compare(password, user.password);
             if (!isValid) {
-                return res.status(400).send("Invalid Credentials");
+                return res.status(400).json({
+                    result: {},
+                    error: {
+                        code: "",
+                        message: "Invalid Credentials",
+                        data: {}
+                    }
+                });
             }
 
             const token = jwt.sign(
@@ -43,6 +58,7 @@ class UserController {
             );
 
             user.token = token;
+            user.expiresIn = 2 * 60 * 60 * 1000;
 
             return res.status(200).json(user);
 
