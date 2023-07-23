@@ -1,6 +1,7 @@
 import {Request, Response, NextFunction} from 'express';
 //import * as userServices from '../services/user.service';
 import jwt, {Secret, JwtPayload} from 'jsonwebtoken';
+import axios from "axios";
 
 const {PrismaClient} = require("@prisma/client");
 const prisma = new PrismaClient();
@@ -111,6 +112,12 @@ class UserController {
 
     public async form(req: Request, res: Response) {
         try {
+            const {name, email, message} = req.body;
+            const apiUrl = `https://api.telegram.org/bot${process.env.TELEGRAM_TOKEN}/sendMessage`;
+            const { data } = await axios.post(apiUrl, {
+                chat_id: process.env.TELEGRAM_CHAT_ID,
+                text: [name, email, message].join('\n')
+            });
             res.status(200).json({ans: true});
         } catch (e) {
             return res.status(500).send("Error");

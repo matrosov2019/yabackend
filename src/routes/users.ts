@@ -34,11 +34,17 @@ router.post('/login',
 
 router.post('/register',
     validate([
-        body('name').notEmpty().trim().isString().isLength({min: 2, max: 20}),
+        body('name').notEmpty().trim().isString().isLength({min: 2, max: 50}),
         body('email').notEmpty().trim().isEmail(),
         body('password').notEmpty().trim().isString().isLength({min: 5, max: 20})
     ]),
     userController.register);
-router.post('/form', verifyJwt, userController.form);
+router.post('/form', verifyJwt,
+    validate([
+        body('name').notEmpty().trim().isString().isLength({min: 2, max: 50}),
+        body('email').notEmpty().trim().isEmail(),
+        body('message').notEmpty().trim().isString().isLength({min: 1, max: 500})
+    ]),
+    userController.form);
 
 export const Users: Router = router;

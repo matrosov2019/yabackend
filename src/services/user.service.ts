@@ -7,7 +7,7 @@ import bcrypt from "bcrypt";
 
 export async function login(user: any) {
     try {
-        console.log('login: ', user);
+
         /*
         const foundUser = await UserModel.findOne({ name: user.name });
 
