@@ -82,7 +82,12 @@ class UserController {
             });
 
             if (oldUser) {
-                return res.status(409).send("User Already Exist. Please Login");
+                return res.status(409).send({
+                    result: {},
+                    error: {
+                        message: "User Already Exist. Please Login"
+                    }
+                });
             }
 
             //Encrypt user password
@@ -94,7 +99,7 @@ class UserController {
                     name: name,
                     password: encryptedPassword
                 },
-            })
+            });
 
             user.token = jwt.sign(
                 {user_id: user.id, email},
@@ -103,6 +108,8 @@ class UserController {
                     expiresIn: "2h",
                 }
             );
+
+            user.expiresIn = 2 * 60 * 60 * 1000;
 
             res.status(201).json(user);
         } catch (err) {
@@ -114,7 +121,7 @@ class UserController {
         try {
             const {name, email, message} = req.body;
             const apiUrl = `https://api.telegram.org/bot${process.env.TELEGRAM_TOKEN}/sendMessage`;
-            const { data } = await axios.post(apiUrl, {
+            const {data} = await axios.post(apiUrl, {
                 chat_id: process.env.TELEGRAM_CHAT_ID,
                 text: [name, email, message].join('\n')
             });
